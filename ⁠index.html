@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobJovem - Talentos da Nova Geração</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-2xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-indigo-600 text-white p-2 rounded-xl font-bold text-xl"><i class="fa-solid fa-bolt"></i></span>
+                    <span class="text-2xl font-black text-indigo-600 tracking-tight">Job<span class="text-gray-900">Jovem</span></span>
+                </div>
+                <!-- Indicador de Usuários Online -->
+                <div class="hidden sm:flex items-center space-x-1.5 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+                    <span class="relative flex h-2.5 w-2.5">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-xs font-bold text-emerald-700"><span id="contador-online">48</span> online</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="alert('Funcionalidade de perfil em breve!')" class="bg-indigo-50 text-indigo-600 font-semibold px-4 py-2 rounded-xl hover:bg-indigo-100 transition text-sm">Meu Perfil</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-2xl mx-auto px-4 py-6">
+
+        <!-- Caixa de Publicação (Estilo Facebook) -->
+        <div class="bg-white rounded-2xl shadow-sm p-4 mb-6 border border-gray-200">
+            <div class="flex items-center space-x-3 mb-3">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-full object-cover">
+                <input type="text" placeholder="O que você está precisando ou quer oferecer?" class="w-full bg-gray-100 hover:bg-gray-200/65 transition px-4 py-2.5 rounded-full text-sm focus:outline-none cursor-pointer" onclick="abrirModalPost()" readonly>
+            </div>
+            <div class="flex border-t border-gray-100 pt-3 justify-around">
+                <button onclick="abrirModalComTipo('oferecer')" class="flex items-center space-x-2 text-gray-600 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium text-sm transition">
+                    <i class="fa-solid fa-hand-holding-dollar text-emerald-500 text-base"></i>
+                    <span>Oferecer Serviço</span>
+                </button>
+                <button onclick="abrirModalComTipo('precisar')" class="flex items-center space-x-2 text-gray-600 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium text-sm transition">
+                    <i class="fa-solid fa-bullhorn text-indigo-500 text-base"></i>
+                    <span>Estou Precisando</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Abas de Filtro Principal (Tipo) -->
+        <div class="flex space-x-2 mb-3">
+            <button onclick="filtrarFeed('todos', 'tipo')" id="btn-tipo-todos" class="bg-indigo-600 text-white font-semibold text-xs px-3.5 py-1.5 rounded-full shadow-sm transition">Todos</button>
+            <button onclick="filtrarFeed('oferecer', 'tipo')" id="btn-tipo-oferecer" class="bg-white text-gray-600 font-semibold text-xs px-3.5 py-1.5 rounded-full border border-gray-200 hover:bg-gray-50 transition">Oferecendo</button>
+            <button onclick="filtrarFeed('precisar', 'tipo')" id="btn-tipo-precisar" class="bg-white text-gray-600 font-semibold text-xs px-3.5 py-1.5 rounded-full border border-gray-200 hover:bg-gray-50 transition">Precisando</button>
+        </div>
+
+        <!-- Filtros por Categoria -->
+        <div class="flex space-x-2 overflow-x-auto pb-3 mb-4 scrollbar-none">
+            <button onclick="filtrarFeed('todas', 'cat')" id="btn-cat-todas" class="bg-gray-800 text-white text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap transition">Todas Categorias</button>
+            <button onclick="filtrarFeed('Design', 'cat')" id="btn-cat-Design" class="bg-white text-gray-600 border border-gray-200 text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 transition">Design</button>
+            <button onclick="filtrarFeed('Vídeo', 'cat')" id="btn-cat-Vídeo" class="bg-white text-gray-600 border border-gray-200 text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 transition">Vídeos</button>
+            <button onclick="filtrarFeed('Tecnologia', 'cat')" id="btn-cat-Tecnologia" class="bg-white text-gray-600 border border-gray-200 text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 transition">Tecnologia</button>
+            <button onclick="filtrarFeed('Aulas', 'cat')" id="btn-cat-Aulas" class="bg-white text-gray-600 border border-gray-200 text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 transition">Aulas</button>
+        </div>
+
+        <!-- Feed Dinâmico -->
+        <div id="feed-posts" class="space-y-4">
+            
+            <!-- Post Exemplo 1 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 post-item" data-tipo="oferecer" data-categoria="Design">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <div class="flex items-center space-x-1.5">
+                                <h4 class="font-bold text-sm text-gray-900">Mariana, 18</h4>
+                                <span class="text-xs text-yellow-500 font-bold"><i class="fa-solid fa-star"></i> 5.0 (28)</span>
+                            </div>
+                            <span class="text-xs text-gray-400">Há 15 minutos</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-purple-50 text-purple-600 font-bold text-xs px-2.5 py-1 rounded">Design</span>
+                        <span class="bg-emerald-50 text-emerald-600 font-bold text-xs px-2.5 py-1 rounded-full"><i class="fa-solid fa-check mr-1"></i> Oferecendo</span>
+                    </div>
+                </div>
+                <p class="text-gray-800 text-sm mb-3">Estou criando artes para Instagram e carrosséis chamativos para quem quer movimentar o perfil! Faço pacotes acessíveis.</p>
+                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <span class="font-bold text-indigo-600 text-sm">R$ 45,00 / projeto</span>
+                    <button onclick="falarNoWhatsApp('Mariana', 'Criação de Artes para Instagram')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span>Chamar no WhatsApp</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Post Exemplo 2 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 post-item" data-tipo="precisar" data-categoria="Vídeo">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <div class="flex items-center space-x-1.5">
+                                <h4 class="font-bold text-sm text-gray-900">Lucas, 19</h4>
+                                <span class="text-xs text-yellow-500 font-bold"><i class="fa-solid fa-star"></i> 4.9 (12)</span>
+                            </div>
+                            <span class="text-xs text-gray-400">Há 1 hora</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-blue-50 text-blue-600 font-bold text-xs px-2.5 py-1 rounded">Vídeo</span>
+                        <span class="bg-indigo-50 text-indigo-600 font-bold text-xs px-2.5 py-1 rounded-full"><i class="fa-solid fa-bullhorn mr-1"></i> Preciso</span>
+                    </div>
+                </div>
+                <p class="text-gray-800 text-sm mb-3">Estou precisando de alguém que saiba editar vídeos curtos estilo Reels/TikTok com legendas dinâmicas para o meu canal.</p>
+                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <span class="font-bold text-indigo-600 text-sm">Orçamento a combinar</span>
+                    <button onclick="falarNoWhatsApp('Lucas', 'Edição de Vídeos para Reels')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span>Chamar no WhatsApp</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal de Nova Publicação -->
+    <div id="modal-post" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl relative">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-gray-900">Criar Publicação</h3>
+                <button onclick="fecharModalPost()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">O que você quer fazer?</label>
+                    <select id="tipo-post" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm font-medium focus:outline-none focus:border-indigo-500">
+                        <option value="oferecer">Quero OFERECER um serviço</option>
+                        <option value="precisar">Estou PRECISANDO de um serviço</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Categoria</label>
+                    <select id="categoria-post" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm font-medium focus:outline-none focus:border-indigo-500">
+                        <option value="Design">Design & Redes Sociais</option>
+                        <option value="Vídeo">Edição de Vídeo / Reels</option>
+                        <option value="Tecnologia">Tecnologia & Web</option>
+                        <option value="Aulas">Aulas & Reforço</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Seu Nome e Idade</label>
+                    <input type="text" id="post-autor" placeholder="Ex: João, 18" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Descrição</label>
+                    <textarea id="post-texto" rows="3" placeholder="Descreva o que você faz ou o que precisa..." class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:border-indigo-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Valor / Preço</label>
+                    <input type="text" id="post-preco" placeholder="Ex: R$ 50,00 ou A combinar" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+                <button onclick="publicarPost()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition shadow-md shadow-indigo-100">Publicar no Feed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Principal -->
+    <script>
+        let filtroAtualTipo = 'todos';
+        let filtroAtualCat = 'todas';
+
+        // Simula variação de usuários online
+        setInterval(() => {
+            const spanOnline = document.getElementById('contador-online');
+            let atual = parseInt(spanOnline.innerText);
+            let variacao = Math.floor(Math.random() * 3) - 1;
+            let novoValor = Math.max(40, atual + variacao);
+            spanOnline.innerText = novoValor;
+        }, 6000);
+
+        function abrirModalPost() {
+            document.getElementById('modal-post').classList.remove('hidden');
+        }
+
+        function abrirModalComTipo(tipo) {
+            document.getElementById('tipo-post').value = tipo;
+            abrirModalPost();
+        }
+
+        function fecharModalPost() {
+            document.getElementById('modal-post').classList.add('hidden');
+        }
+
+        function publicarPost() {
+            const tipo = document.getElementById('tipo-post').value;
+            const categoria = document.getElementById('categoria-post').value;
+            const autor = document.getElementById('post-autor').value.trim() || 'Novo Usuário, 18';
+            const texto = document.getElementById('post-texto').value.trim();
+            const preco = document.getElementById('post-preco').value.trim() || 'A combinar';
+
+            if (!texto) {
+                alert('Escreva alguma coisa na descrição!');
+                return;
+            }
+
+            const feed = document.getElementById('feed-posts');
+            const badgeClass = tipo === 'oferecer' ? 'bg-emerald-50 text-emerald-600' : 'bg-indigo-50 text-indigo-600';
+            const badgeIcon = tipo === 'oferecer' ? 'fa-check' : 'fa-bullhorn';
+            const badgeText = tipo === 'oferecer' ? 'Oferecendo' : 'Preciso';
+
+            let catColor = 'bg-gray-100 text-gray-700';
+            if (categoria === 'Design') catColor = 'bg-purple-50 text-purple-600';
+            if (categoria === 'Vídeo') catColor = 'bg-blue-50 text-blue-600';
+            if (categoria === 'Tecnologia') catColor = 'bg-emerald-50 text-emerald-600';
+            if (categoria === 'Aulas') catColor = 'bg-amber-50 text-amber-600';
+
+            const novoPost = document.createElement('div');
+            novoPost.className = 'bg-white rounded-2xl shadow-sm border border-gray-200 p-5 post-item';
+            novoPost.setAttribute('data-tipo', tipo);
+            novoPost.setAttribute('data-categoria', categoria);
+            
+            novoPost.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <div class="flex items-center space-x-1.5">
+                                <h4 class="font-bold text-sm text-gray-900">${autor}</h4>
+                                <span class="text-xs text-yellow-500 font-bold"><i class="fa-solid fa-star"></i> 5.0 (Novo)</span>
+                            </div>
+                            <span class="text-xs text-gray-400">Agora mesmo</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="${catColor} font-bold text-xs px-2.5 py-1 rounded">${categoria}</span>
+                        <span class="${badgeClass} font-bold text-xs px-2.5 py-1 rounded-full"><i class="fa-solid ${badgeIcon} mr-1"></i> ${badgeText}</span>
+                    </div>
+                </div>
+                <p class="text-gray-800 text-sm mb-3">${texto}</p>
+                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <span class="font-bold text-indigo-600 text-sm">${preco}</span>
+                    <button onclick="falarNoWhatsApp('${autor.split(',')[0]}', '${texto.substring(0, 20)}...')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span>Chamar no WhatsApp</span>
+                    </button>
+                </div>
+            `;
+
+            feed.prepend(novoPost);
+            fecharModalPost();
+            aplicarFiltros();
+
+            document.getElementById('post-texto').value = '';
+            document.getElementById('post-autor').value = '';
+            document.getElementById('post-preco').value = '';
+        }
+
+        function filtrarFeed(valor, tipoFiltro) {
+            if (tipoFiltro === 'tipo') {
+                filtroAtualTipo = valor;
+                ['todos', 'oferecer', 'precisar'].forEach(t => {
+                    const btn = document.getElementById(`btn-tipo-${t}`);
+                    if (t === valor) {
+                        btn.className = 'bg-indigo-600 text-white font-semibold text-xs px-3.5 py-1.5 rounded-full shadow-sm transition';
+                    } else {
+                        btn.className = 'bg-white text-gray-600 font-semibold text-xs px-3.5 py-1.5 rounded-full border border-gray-200 hover:bg-gray-50 transition';
+                    }
+                });
+            } else {
+                filtroAtualCat = valor;
+                ['todas', 'Design', 'Vídeo', 'Tecnologia', 'Aulas'].forEach(c => {
+                    const btn = document.getElementById(`btn-cat-${c}`);
+                    if (btn) {
+                        if (c === valor) {
+                            btn.className = 'bg-gray-800 text-white text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap transition';
+                        } else {
+                            btn.className = 'bg-white text-gray-600 border border-gray-200 text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 transition';
+                        }
+                    }
+                });
+            }
+            aplicarFiltros();
+        }
+
+        function aplicarFiltros() {
+            const posts = document.querySelectorAll('.post-item');
+            posts.forEach(post => {
+                const tipoPost = post.getAttribute('data-tipo');
+                const catPost = post.getAttribute('data-categoria');
+
+                const combinaTipo = (filtroAtualTipo === 'todos' || tipoPost === filtroAtualTipo);
+                const combinaCat = (filtroAtualCat === 'todas' || catPost === filtroAtualCat);
+
+                if (combinaTipo && combinaCat) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        function falarNoWhatsApp(nome, assunto) {
+            const numeroWhatsApp = "5511999999999"; // Substitua pelo seu número oficial de suporte ou WhatsApp padrão
+            const mensagem = `Olá, ${nome}! Vi sua publicação "${assunto}" no JobJovem e gostaria de conversar a respeito.`;
+            const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
